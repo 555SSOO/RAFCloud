@@ -1,0 +1,24 @@
+.login-form {
+  display: flex;
+  justify-content: center;
+  height: 100vh;
+  position: relative;
+}
+
+.login-form__btn{
+  align-self: center;
+  position:absolute;
+  top:65%;
+}
+
+.login-form__user-name{
+  position:absolute;
+  top:35%;
+  align-self: center;
+}
+
+.login-form__password{
+  position:absolute;
+  top:50%;
+  align-self: center;
+}

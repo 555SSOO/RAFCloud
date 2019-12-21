@@ -1,0 +1,27 @@
+.user-selection {
+
+  justify-content: center;
+  height: 100vh;
+  position:relative;
+  display: flex;
+
+}
+
+.user-selection__item {
+
+  /*display: flex;*/
+  /*position: absolute;*/
+  margin-left: 50px;
+  /*align-self: center;*/
+
+  top:50%;
+
+}
+
+.user-selection__item__btn {
+
+  height: 200px;
+  width: 200px;
+  /*float: Left;*/
+
+}
