@@ -71,8 +71,9 @@ public class MachineController {
     List<Machine> searchMachine(@RequestParam("machineName") String machineName,
                                 @RequestParam("status") String status,
                                 @RequestParam("dateFrom") String dateFrom,
-                                @RequestParam("dateTo") String dateTo) {
-        return getMachineService().searchMachine(machineName, status, dateFrom, dateTo);
+                                @RequestParam("dateTo") String dateTo,
+                                @RequestParam("username") String username) {
+        return getMachineService().searchMachine(machineName, status, dateFrom, dateTo, username);
     }
 
 }

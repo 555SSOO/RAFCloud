@@ -25,7 +25,8 @@ export class MachineSearchComponent implements OnInit {
     this.machineService.searchMachines(searchParams.machineName,
                                        searchParams.status,
                                        searchParams.dateFrom,
-                                       searchParams.dateTo).subscribe(data => {
+                                       searchParams.dateTo,
+                                       sessionStorage.getItem('username')).subscribe(data => {
       this.machines = data;
     });
 

@@ -21,12 +21,16 @@ export class MachineService {
   }
 
   public getMachines(): Observable<Machine[]> {
-    const params = new HttpParams().set('machineName', '').set('status', '').set('dateFrom', '').set('dateTo', '');
+    const params = new HttpParams().set('machineName', '').set('status', '').set('dateFrom', '').set('dateTo', '').set('username', '');
     return this.http.get<Machine[]>(this.machineUrl + '/search', {params});
   }
 
-  public searchMachines(machineName: string, status: string, dateFrom: string, dateTo: string): Observable<Machine[]> {
-    const params = new HttpParams().set('machineName', machineName).set('status', status).set('dateFrom', dateFrom).set('dateTo', dateTo);
+  public searchMachines(machineName: string, status: string, dateFrom: string, dateTo: string, username: string): Observable<Machine[]> {
+    const params = new HttpParams().set('machineName', machineName)
+                                   .set('status', status)
+                                   .set('dateFrom', dateFrom)
+                                   .set('dateTo', dateTo)
+                                   .set('username', username);
     return this.http.get<Machine[]>(this.machineUrl + '/search', {params});
   }
 

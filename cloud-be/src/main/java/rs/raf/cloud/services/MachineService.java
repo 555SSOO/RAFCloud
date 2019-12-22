@@ -16,6 +16,6 @@ public interface MachineService {
 
     boolean destroyMachine(String UID);
 
-    List<Machine> searchMachine(String machineName, String status, String dateFrom, String dateTo);
+    List<Machine> searchMachine(String machineName, String status, String dateFrom, String dateTo, String username);
 
 }

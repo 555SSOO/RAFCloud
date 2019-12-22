@@ -172,22 +172,26 @@ public class RafMachineService implements MachineService {
     }
 
     @Override
-    public List<Machine> searchMachine(String machineName, String status, String dateFrom, String dateTo) {
+    public List<Machine> searchMachine(String machineName, String status, String dateFrom, String dateTo, String username) {
 
         if (StringUtils.isEmpty(machineName) && StringUtils.isEmpty(status) && StringUtils.isEmpty(dateFrom)
             && StringUtils.isEmpty(dateTo)) {
             return (List<Machine>) getMachineRepository().findAll();
         }
-        return getMachineSearchRepository().searchMachines(buildMachineQueryModel(machineName, status, dateFrom, dateTo));
+        return getMachineSearchRepository().searchMachines(buildMachineQueryModel(machineName, status, dateFrom, dateTo, username));
 
     }
 
-    private MachineQueryModel buildMachineQueryModel(String machineName, String status, String dateFrom, String dateTo) {
+    private MachineQueryModel buildMachineQueryModel(String machineName, String status, String dateFrom, String dateTo, String username) {
         MachineStatus machineStatus = null;
         Date machineDateFrom = null;
         Date machineDateTo = null;
+        User user = null;
         if (!StringUtils.isEmpty(status)) {
             machineStatus = MachineStatus.valueOf(status);
+        }
+        if (!StringUtils.isEmpty(username)) {
+            user = getUserRepository().findByUsername(username);
         }
         try {
             if (!StringUtils.isEmpty(dateFrom)) {
@@ -203,6 +207,7 @@ public class RafMachineService implements MachineService {
         return new MachineQueryModel(machineName,
                                      machineStatus,
                                      machineDateFrom,
-                                     machineDateTo);
+                                     machineDateTo,
+                                     user);
     }
 }

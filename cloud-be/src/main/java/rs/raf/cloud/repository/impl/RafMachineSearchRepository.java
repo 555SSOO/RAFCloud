@@ -40,6 +40,9 @@ public class RafMachineSearchRepository implements MachineSearchRepository {
         if(machineQueryModel.getStatus() != null){
             predicates.add(criteriaBuilder.equal(root.get("status"), machineQueryModel.getStatus()));
         }
+        if(machineQueryModel.getUser() != null){
+            predicates.add(criteriaBuilder.equal(root.get("user"), machineQueryModel.getUser()));
+        }
         if(machineQueryModel.getDateFrom() != null && machineQueryModel.getDateTo() != null){
             predicates.add(criteriaBuilder.lessThanOrEqualTo(root.<Date>get("creationDate"), machineQueryModel.getDateTo()));
             predicates.add(criteriaBuilder.greaterThanOrEqualTo(root.<Date>get("creationDate"), machineQueryModel.getDateFrom()));

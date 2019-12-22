@@ -11,11 +11,13 @@ public class MachineQueryModel {
     private MachineStatus status;
     private Date dateFrom;
     private Date dateTo;
+    private User user;
 
-    public MachineQueryModel(String machineName, MachineStatus status, Date dateFrom, Date dateTo) {
+    public MachineQueryModel(String machineName, MachineStatus status, Date dateFrom, Date dateTo, User user) {
         this.machineName = machineName;
         this.status = status;
         this.dateFrom = dateFrom;
         this.dateTo = dateTo;
+        this.user = user;
     }
 }
