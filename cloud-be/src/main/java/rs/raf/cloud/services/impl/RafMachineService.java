@@ -5,17 +5,24 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
+import org.springframework.util.StringUtils;
 import rs.raf.cloud.controllers.MachineController;
 import rs.raf.cloud.entities.Machine;
+import rs.raf.cloud.entities.MachineQueryModel;
 import rs.raf.cloud.entities.User;
 import rs.raf.cloud.exceptions.MachineException;
 import rs.raf.cloud.repository.MachineRepository;
+import rs.raf.cloud.repository.MachineSearchRepository;
 import rs.raf.cloud.repository.UserRepository;
 import rs.raf.cloud.services.MachineService;
 import rs.raf.cloud.util.constants.MachineOperation;
 import rs.raf.cloud.util.constants.MachineStatus;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 import java.util.Random;
@@ -24,6 +31,7 @@ import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
 @Service
+@Transactional
 public class RafMachineService implements MachineService {
 
     private static final Logger LOG = LoggerFactory.getLogger(RafMachineService.class);
@@ -31,6 +39,10 @@ public class RafMachineService implements MachineService {
     @Autowired
     @Getter
     MachineRepository machineRepository;
+
+    @Autowired
+    @Getter
+    MachineSearchRepository machineSearchRepository;
 
     @Autowired
     @Getter
@@ -65,7 +77,6 @@ public class RafMachineService implements MachineService {
             return false;
         }
     }
-
 
     private void changeMachineStatus(String UID, MachineOperation operation) throws InterruptedException, MachineException {
         Machine machine = getMachineRepository().findByUID(UID);
@@ -162,6 +173,36 @@ public class RafMachineService implements MachineService {
 
     @Override
     public List<Machine> searchMachine(String machineName, String status, String dateFrom, String dateTo) {
-        return (List<Machine>) getMachineRepository().findAll();
+
+        if (StringUtils.isEmpty(machineName) && StringUtils.isEmpty(status) && StringUtils.isEmpty(dateFrom)
+            && StringUtils.isEmpty(dateTo)) {
+            return (List<Machine>) getMachineRepository().findAll();
+        }
+        return getMachineSearchRepository().searchMachines(buildMachineQueryModel(machineName, status, dateFrom, dateTo));
+
+    }
+
+    private MachineQueryModel buildMachineQueryModel(String machineName, String status, String dateFrom, String dateTo) {
+        MachineStatus machineStatus = null;
+        Date machineDateFrom = null;
+        Date machineDateTo = null;
+        if (!StringUtils.isEmpty(status)) {
+            machineStatus = MachineStatus.valueOf(status);
+        }
+        try {
+            if (!StringUtils.isEmpty(dateFrom)) {
+                machineDateFrom = new SimpleDateFormat("yyyy-MM-dd").parse(dateFrom);
+            }
+            if (!StringUtils.isEmpty(dateTo)) {
+                machineDateTo = new SimpleDateFormat("yyyy-MM-dd").parse(dateTo);
+            }
+        } catch (ParseException e) {
+            LOG.error("Wrong date format - " + e);
+            return null;
+        }
+        return new MachineQueryModel(machineName,
+                                     machineStatus,
+                                     machineDateFrom,
+                                     machineDateTo);
     }
 }

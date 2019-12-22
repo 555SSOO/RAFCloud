@@ -1,9 +1,12 @@
 package rs.raf.cloud.controllers.interceptors;
 
+import lombok.Getter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
+import rs.raf.cloud.services.MachineService;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -13,18 +16,20 @@ public class MachineOperationInterceptor extends HandlerInterceptorAdapter {
 
     private static final Logger LOG = LoggerFactory.getLogger(MachineOperationInterceptor.class);
 
-    @Override
-    public boolean preHandle(HttpServletRequest request,
-                             HttpServletResponse response, Object handler) throws Exception {
-        if (needInstantResponse(request.getRequestURL().toString())) {
-            response.setStatus(HttpServletResponse.SC_OK);
-            return false;
-        }
-        return true;
-    }
+    @Autowired
+    @Getter
+    MachineService machineService;
 
-    private boolean needInstantResponse(String requestUrl) {
-        return requestUrl.endsWith("start") || requestUrl.endsWith("stop") || requestUrl.endsWith("restart");
+    @Override
+    public void afterCompletion(HttpServletRequest request, HttpServletResponse response, Object handler, Exception ex) {
+        String requestUrl = request.getRequestURL().toString();
+        if (requestUrl.endsWith("start")){
+            getMachineService().startMachine(request.getParameter("machineUID"));
+        } else if (requestUrl.endsWith("stop")) {
+            getMachineService().stopMachine(request.getParameter("machineUID"));
+        } else if (requestUrl.endsWith("restart")) {
+            getMachineService().restartMachine(request.getParameter("machineUID"));
+        }
     }
 
 }
