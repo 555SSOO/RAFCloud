@@ -11,7 +11,11 @@ export class MachineCreateComponent {
   constructor(private machineService: MachineService) { }
 
   public createMachine(machine) {
+    if (machine.active && machine.name) {
     this.machineService.createMachine(machine.active, machine.name, sessionStorage.getItem('username')).subscribe();
+    } else {
+      alert('Machine name and status are required');
+    }
   }
 
 }
