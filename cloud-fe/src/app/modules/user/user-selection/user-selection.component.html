@@ -1,8 +1,0 @@
-<div class="user-selection">
-  <h2>Who is watching?</h2>
-  <div *ngFor="let user of users">
-    <div class="user-selection__item">
-      <button (click)=selectUser(user.id) class="btn user-selection__item__btn btn-success">{{ user.firstName }}</button>
-    </div>
-  </div>
-</div>

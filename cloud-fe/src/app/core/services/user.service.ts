@@ -7,10 +7,10 @@ import {SpringUrls} from './spring-urls';
 })
 export class UserService {
 
-  private userUrl: string;
+  private readonly userUrl: string;
 
   constructor(private http: HttpClient) {
-    this.userUrl = SpringUrls.CHILLFLIX_ENDPOINT + '/user';
+    this.userUrl = SpringUrls.BASE_URL + '/user';
   }
   public setCurrentUser(userId: string) {
     sessionStorage.setItem('userId', userId);

@@ -1,0 +1,8 @@
+<form #createMachineData = "ngForm" (ngSubmit) = "createMachine(createMachineData.value)" >
+  <input type = "text" name = "name" placeholder = "Machine Name" required ngModel>
+  <br/>
+  <input type="radio" name="active" value="true" ngModel> Active
+  <input type="radio" name="active" value="false" ngModel> Inactive
+  <br/>
+  <input type = "submit" value = "submit">
+</form>
