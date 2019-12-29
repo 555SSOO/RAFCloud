@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import rs.raf.cloud.controllers.constants.ControllerConstants;
 import rs.raf.cloud.services.AuthenticationService;
@@ -19,9 +20,10 @@ public class AuthenticationController {
     @Getter
     AuthenticationService authenticationService;
 
-    @GetMapping
-    public boolean authenticateUser(@RequestParam String username, @RequestParam String password) {
-        return getAuthenticationService().isPasswordCorrect(username, password);
+    @RequestMapping(produces="text/plain")
+    @ResponseBody
+    public String authenticateUser(@RequestParam String username, @RequestParam String password) {
+        return "\""+getAuthenticationService().isPasswordCorrect(username, password)+"\"";
     }
 
 }

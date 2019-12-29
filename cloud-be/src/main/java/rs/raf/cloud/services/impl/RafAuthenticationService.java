@@ -6,8 +6,11 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import rs.raf.cloud.entities.User;
+import rs.raf.cloud.repository.UserRepository;
 import rs.raf.cloud.services.AuthenticationService;
 import rs.raf.cloud.services.UserService;
+
+import java.util.UUID;
 
 @Service
 public class RafAuthenticationService implements AuthenticationService {
@@ -16,18 +19,28 @@ public class RafAuthenticationService implements AuthenticationService {
 
     @Autowired
     @Getter
-    UserService customerService;
+    UserService userService;
+
+    @Autowired
+    @Getter
+    UserRepository userRepository;
 
     @Override
-    public boolean isPasswordCorrect(String username, String password){
-//        try {
-//            User customer = getCustomerService().getCustomerByUsername(username);
-//            return customer.getPassword().equals(password);
-//        } catch (Exception e) {
-//            LOG.info("AuthService exception: " + e);
-//            return false;
-//        }
-        return true;
+    public String isPasswordCorrect(String username, String password) {
+        try {
+            User user = getUserRepository().findByUsername(username);
+            if (user.getPassword().equals(password)) {
+                String token = UUID.randomUUID().toString();
+                user.setCurrentToken(token);
+                getUserRepository().save(user);
+                return token;
+            } else {
+                return null;
+            }
+        } catch (Exception e) {
+            LOG.info("AuthService exception: " + e);
+            return null;
+        }
     }
 
 }

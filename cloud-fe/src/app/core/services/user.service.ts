@@ -12,11 +12,4 @@ export class UserService {
   constructor(private http: HttpClient) {
     this.userUrl = SpringUrls.BASE_URL + '/user';
   }
-  public setCurrentUser(userId: string) {
-    sessionStorage.setItem('userId', userId);
-    return this.http.post(this.userUrl + '/set-current-user', userId);
-  }
-  public getCurrentUserId(): string {
-    return sessionStorage.getItem('userId');
-  }
 }

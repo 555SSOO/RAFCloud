@@ -20,8 +20,9 @@ export class LoginComponent implements OnInit {
   }
 
   checkLogin() {
-    this.authenticationService.authenticate(this.username, this.password).subscribe(isAuthenticated => {
-      if ( isAuthenticated ) {
+    this.authenticationService.authenticate(this.username, this.password).subscribe(token => {
+      if ( token ) {
+        sessionStorage.setItem('token', token);
         sessionStorage.setItem('username', this.username);
         this.router.navigate(['']);
         this.invalidLogin = false;

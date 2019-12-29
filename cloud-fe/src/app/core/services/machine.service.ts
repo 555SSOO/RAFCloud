@@ -16,12 +16,20 @@ export class MachineService {
   }
 
   public createMachine(active: string, machineName: string, username: string) {
-    const params = new HttpParams().set('active', active).set('machineName', machineName).set('username', username);
+    const params = new HttpParams().set('active', active)
+                                   .set('machineName', machineName)
+                                   .set('username', username)
+                                   .set('token', sessionStorage.getItem('token'));
     return this.http.post(this.machineUrl + '/create', params);
   }
 
   public getMachines(): Observable<Machine[]> {
-    const params = new HttpParams().set('machineName', '').set('status', '').set('dateFrom', '').set('dateTo', '').set('username', '');
+    const params = new HttpParams().set('machineName', '')
+                                   .set('status', '')
+                                   .set('dateFrom', '')
+                                   .set('dateTo', '')
+                                   .set('username', sessionStorage.getItem('username'))
+                                   .set('token', sessionStorage.getItem('token'));
     return this.http.get<Machine[]>(this.machineUrl + '/search', {params});
   }
 
@@ -30,7 +38,8 @@ export class MachineService {
                                    .set('status', status)
                                    .set('dateFrom', dateFrom)
                                    .set('dateTo', dateTo)
-                                   .set('username', username);
+                                   .set('username', username)
+                                   .set('token', sessionStorage.getItem('token'));
     return this.http.get<Machine[]>(this.machineUrl + '/search', {params});
   }
 

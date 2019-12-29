@@ -14,12 +14,12 @@ export class AuthenticationService {
     this.authenticationUrl = SpringUrls.BASE_URL + '/auth';
   }
 
-  private backendAuthentication(username, password): Observable<boolean> {
+  private backendAuthentication(username, password): Observable<string> {
     const params = new HttpParams().set('username', username).set('password', password);
-    return this.http.get<boolean>(this.authenticationUrl, {params});
+    return this.http.get<string>(this.authenticationUrl, {params});
   }
 
-  authenticate(username, password): Observable<boolean> {
+  authenticate(username, password): Observable<string> {
     return this.backendAuthentication(username, password);
   }
 
